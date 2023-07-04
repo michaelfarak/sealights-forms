@@ -1,0 +1,62 @@
+<form [formGroup]="addressForm" class="address-form">
+  <mat-form-field appearance="outline">
+    <mat-label for="name">Name:</mat-label>
+    <input
+      matInput
+      type="text"
+      placeholder="Ex. Tel Aviv"
+      formControlName="name"
+      required
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label for="country">Country:</mat-label>
+    <mat-select
+      formControlName="country"
+      (selectionChange)="onCountrySelectionChange($event.value)"
+    >
+      <mat-option *ngFor="let country of countriesList" [value]="country.name">
+        {{ country.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div>
+    <mat-form-field appearance="outline">
+      <mat-label for="city">City:</mat-label>
+      <mat-select formControlName="city">
+        <mat-option *ngFor="let city of citiesList" [value]="city.name">
+          {{ city.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="accent"
+      style="margin-left: 20px"
+      (click)="openDialog()"
+    >
+      Add city
+    </button>
+  </div>
+  <mat-form-field appearance="outline">
+    <mat-label for="street">Street:</mat-label>
+    <input
+      matInput
+      type="text"
+      placeholder="Dizengoff St."
+      formControlName="street"
+      required
+    />
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="warn"
+    class="remove-button"
+    type="button"
+    (click)="remove.emit()"
+  >
+    Remove Address
+  </button>
+</form>

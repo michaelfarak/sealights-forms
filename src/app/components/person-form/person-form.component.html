@@ -1,0 +1,68 @@
+<h1>Add a new Person</h1>
+<form [formGroup]="personForm" (ngSubmit)="onSubmit()">
+  <div class="basic-info-container">
+    <mat-form-field appearance="outline">
+      <mat-label for="name">Name:</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Ex. Michael Farakdjian"
+        formControlName="name"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Choose a date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="birthdate" />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <h2>Addresses:</h2>
+  <div
+    *ngIf="countries$ | async; let countriesWithCities"
+    formArrayName="addresses"
+    class="addresses-container"
+  >
+    <div
+      *ngFor="let addressForm of addressArray.controls; let i = index"
+      class="address-form"
+    >
+      <app-address-form
+        [addressForm]="addressForm"
+        [countriesList]="countriesWithCities"
+        (cityAdded)="onCityAdded($event)"
+        (remove)="removeAddress(i)"
+      ></app-address-form>
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      (click)="addNewAddressForm()"
+    >
+      Add Address
+    </button>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!personForm.valid || addressArray.length === 0"
+    >
+      Save Person
+    </button>
+  </div>
+</form>
+
+<button mat-raised-button color="primary" routerLink="/dashboard">
+  Go to Dashboard
+</button>
